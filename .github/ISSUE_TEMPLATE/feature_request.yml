@@ -1,0 +1,19 @@
+name: "Feature request"
+description: Suggest an idea or feature for the project.
+title: "[FEATURE REQUEST]: "
+labels: ["feature"]
+assignees: ''
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to share your idea!
+  - type: textarea
+    id: idea
+    attributes:
+      label: "Idea"
+      description: "Describe your idea or feature request."
+      placeholder: "Please describe your idea in detail here."
+    validations:
+      required: true

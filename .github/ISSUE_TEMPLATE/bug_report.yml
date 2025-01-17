@@ -1,0 +1,26 @@
+name: "Bug report"
+description: Report a bug or issue with the project.
+title: "[BUG]: "
+labels: ["bug", "needs validation"]
+assignees: ''
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report!
+  - type: input
+    id: minecraft-version
+    attributes:
+      label: "Minecraft Version"
+      description: "The Minecraft version where the bug occurred (if it only happens on specific versions)."
+      placeholder: "e.g., 1.20, 1.21"
+    validations:
+      required: false
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: "Steps to Reproduce"
+      description: "The steps to reproduce the bug."
+    validations:
+      required: true
