@@ -2,7 +2,6 @@ name: "Bug report"
 description: Report a bug or issue with the project.
 title: "[BUG]: "
 labels: ["bug", "needs validation"]
-assignees: ''
 
 body:
   - type: markdown
