@@ -1,0 +1,17 @@
+#Do not change this unless you know what you are doing
+file-version: 1
+
+#StaffChat Configurations
+#Supported Placeholders are: <author> and <message>
+#For the player-staffchat-message you can use the standard vanilla chat formatting
+player-staffchat-message: "§5Staff | §8<author>: §4<message>"
+#For the console-staffchat-message you can use ANSI Escape Codes
+console-staffchat-message: "\u001B[35mStaff | \u001B[90m<author>: \u001B[31m<message>"
+
+#Discord Configurations
+#Enable/Disable the Discord Integration
+enable-discord-integration: false
+#Your Discord Bot Token
+discord-bot-token: ""
+#The ID of the StaffChat-Discord-Channel
+discord-channel-id: ""
