@@ -1,18 +1,32 @@
 # StaffChatVelocity
 
-## Description
-
 StaffChatVelocity is a simple Velocity Minecraft Plugin that allows you to write with other Staffmembers easily. This is my first project and I hope you like it ❤️
 
-### How does it work?
+## Why sould I use this plugin?
 
-Write in the StaffChat using ```/staffchat <message>```
-It also works with the Console
+Because it's made with Heart ❤️ by me. I'm using this Plugin on my own Minecraft Server, which means that it will get Updates frequently. I would be really happy if you give it a try.
+
+## How does is work?
+
+### Features
+
+- Customisable Staffchat with Discord Integration
+
+### Commands
+
+- ```/staffchat <message>``` sends a message to the staffchat. Alias: /sc
+- ```/staffchatplugin reload (all|config|discord)``` reloads the plugin. This may take a while, because the Discord-Bot also reloads. Alias: /scpl
 
 ### Permissions
 
-To use the StaffChat you need to have the ```staffchat.use``` permission
-To see the StaffChat you need to have the ```staffchat.see```permission
+- staffchat.use Use the staffchat
+- staffchat.see See the staffchat
+- staffchat.manage Execute ```/staffchatplugin```
+- staffchat.manage.reload Reload the plugin
+
+### Files
+
+plugins/staffchatvelocity/config.yml
 
 ### Check it out
 
