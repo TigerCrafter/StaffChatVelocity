@@ -8,14 +8,14 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import org.slf4j.Logger;
 
-public class Bot {
+public class DiscordBotManager {
     private final ProxyServer proxyServer;
     private final Logger logger;
-    private final YamlDocument config;
+    public YamlDocument config;
     public JDA discordBot;
     public boolean enabled = false;
 
-    public Bot(ProxyServer proxyServer, Logger logger, YamlDocument config) {
+    public DiscordBotManager(ProxyServer proxyServer, Logger logger, YamlDocument config) {
         this.proxyServer = proxyServer;
         this.logger = logger;
         this.config = config;
@@ -25,12 +25,16 @@ public class Bot {
         }
     }
 
-    public void reload() {
+    public boolean reload() {
+        enabled = false;
+        if (discordBot != null) {
+            discordBot.shutdown();
+        }
         if (config.getBoolean("enable-discord-integration")) {
             discordBot = JDABuilder.createDefault(config.getString("discord-bot-token")).addEventListeners(new DiscordStaffChat(proxyServer, logger, config, this)).enableIntents(GatewayIntent.MESSAGE_CONTENT).build();
             enabled = true;
-        } else {
-            enabled = false;
+            return discordBot.getStatus().isInit();
         }
+        return true;
     }
 }

@@ -16,7 +16,7 @@ import dev.dejvokep.boostedyaml.settings.dumper.DumperSettings;
 import dev.dejvokep.boostedyaml.settings.general.GeneralSettings;
 import dev.dejvokep.boostedyaml.settings.loader.LoaderSettings;
 import dev.dejvokep.boostedyaml.settings.updater.UpdaterSettings;
-import io.github.tigercrafter.staffchatvelocity.discord.Bot;
+import io.github.tigercrafter.staffchatvelocity.discord.DiscordBotManager;
 import io.github.tigercrafter.staffchatvelocity.staffchat.commands.StaffChatCommand;
 import io.github.tigercrafter.staffchatvelocity.staffchat.commands.StaffChatPluginCommand;
 import org.slf4j.Logger;
@@ -34,10 +34,13 @@ import java.util.Optional;
         url = "https://github.com/TigerCrafter/StaffChatVelocity",
         authors = {"TigerCrafter"})
 public class StaffChatVelocity {
+    public static String version = "1.0-SNAPSHOT";
+    public static String description = "A simple StaffChat Plugin for Velocity";
 
     private final ProxyServer proxyServer;
     private final Logger logger;
     private final Path dataDirectory;
+    public static StaffChatVelocity instance;
     private static YamlDocument config;
 
     @Inject
@@ -45,6 +48,7 @@ public class StaffChatVelocity {
         this.proxyServer = proxyServer;
         this.logger = logger;
         this.dataDirectory = dataDirectory;
+        instance = this;
 
         try {
             config = YamlDocument.create(new File(dataDirectory.toFile(), "config.yml"),
@@ -60,7 +64,7 @@ public class StaffChatVelocity {
             config.save();
         } catch (IOException e) {
             logger.error("Couldn't create or load config file! Plugin will now shutdown");
-            Optional<PluginContainer> plugin = proxyServer.getPluginManager().getPlugin("staffchatvelocity");
+            Optional<PluginContainer> plugin = proxyServer.getPluginManager().fromInstance(instance);
             plugin.ifPresent(pluginContainer -> pluginContainer.getExecutorService().shutdown());
 
         }
@@ -77,9 +81,9 @@ public class StaffChatVelocity {
                 .aliases("scpl")
                 .plugin(this)
                 .build();
-        Bot bot = new Bot(proxyServer, logger, config);
-        BrigadierCommand staffChatCommand = StaffChatCommand.createBrigadierCommand(proxyServer, logger, bot, config);
-        BrigadierCommand staffChatPluginCommand = StaffChatPluginCommand.createBrigadierCommand(proxyServer, logger, bot, config);
+        DiscordBotManager discordBotManager = new DiscordBotManager(proxyServer, logger, config);
+        BrigadierCommand staffChatCommand = StaffChatCommand.createBrigadierCommand(proxyServer, logger, discordBotManager, config);
+        BrigadierCommand staffChatPluginCommand = StaffChatPluginCommand.createBrigadierCommand(proxyServer, logger, config, discordBotManager, new YamlDocument[]{config});
         commandManager.register(staffChatCommandMeta, staffChatCommand);
         commandManager.register(staffChatPluginCommandMeta, staffChatPluginCommand);
         logger.info("Successfully initialized!");

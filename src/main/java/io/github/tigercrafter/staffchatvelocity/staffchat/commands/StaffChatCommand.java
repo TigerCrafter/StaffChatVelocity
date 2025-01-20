@@ -9,8 +9,7 @@ import com.velocitypowered.api.proxy.ConsoleCommandSource;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import dev.dejvokep.boostedyaml.YamlDocument;
-import io.github.tigercrafter.staffchatvelocity.discord.Bot;
-import net.dv8tion.jda.api.JDA;
+import io.github.tigercrafter.staffchatvelocity.discord.DiscordBotManager;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.requests.restaction.MessageCreateAction;
 import net.kyori.adventure.text.Component;
@@ -18,14 +17,8 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.slf4j.Logger;
 
 public class StaffChatCommand {
-    public static BrigadierCommand createBrigadierCommand(final ProxyServer proxyServer, final Logger logger, final Bot bot, final YamlDocument config) {
+    public static BrigadierCommand createBrigadierCommand(final ProxyServer proxyServer, final Logger logger, final DiscordBotManager discordBotManager, final YamlDocument config) {
         LiteralCommandNode<CommandSource> commandNode = BrigadierCommand.literalArgumentBuilder("staffchat")
-                .requires(source -> {
-                    if (source.hasPermission("staffchat.use")) {
-                        return true;
-                    }
-                    return false;
-                })
                 .executes(context -> {
                     CommandSource source = context.getSource();
                     Component message = Component.text("You have to provide a message", NamedTextColor.RED);
@@ -35,6 +28,10 @@ public class StaffChatCommand {
                 .then(BrigadierCommand.requiredArgumentBuilder("message", StringArgumentType.greedyString())
                         .executes(context -> {
                             CommandSource source = context.getSource();
+                            if (!source.hasPermission("staffchat.use")) {
+                                source.sendMessage(Component.text("You don't have permission to use the StaffChat", NamedTextColor.RED));
+                                return 0;
+                            }
                             String author;
                             if (source instanceof Player player) {
                                 author = player.getUsername();
@@ -50,11 +47,11 @@ public class StaffChatCommand {
                                     player.sendMessage(Component.text(config.getString("player-staffchat-message").replace("<author>", author).replace("<message>", message)));
                                 }
                             });
-                            if (!bot.enabled) {
+                            if (!discordBotManager.enabled) {
                                 return Command.SINGLE_SUCCESS;
                             }
                             String channelID = config.getString("discord-channel-id");
-                            TextChannel channel = bot.discordBot.getTextChannelById(channelID);
+                            TextChannel channel = discordBotManager.discordBot.getTextChannelById(channelID);
                             if (channel == null) {
                                 logger.error("Couldn't find TextChannel with ID " + channelID);
                                 return 0;
