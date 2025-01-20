@@ -6,7 +6,7 @@ StaffChatVelocity is a simple Velocity Minecraft Plugin that allows you to write
 
 Because it's made with Heart ❤️ by me. I'm using this Plugin on my own Minecraft Server, which means that it will get Updates frequently. I would be really happy if you give it a try.
 
-## How does is work?
+## How does it work?
 
 ### Features
 
